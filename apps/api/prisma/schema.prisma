@@ -1,0 +1,76 @@
+// Prisma Schema for FAPI Order Service
+// Documentation: https://pris.ly/d/prisma-schema
+
+// =============================================================================
+// Data Source
+// =============================================================================
+// PostgreSQL database connection using environment variable.
+// Set DATABASE_URL in .env file (see .env.example or README for format)
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// =============================================================================
+// Generator
+// =============================================================================
+// Generates TypeScript client for type-safe database access
+generator client {
+  provider = "prisma-client-js"
+}
+
+// =============================================================================
+// Models
+// =============================================================================
+
+/// Product available for purchase
+/// All prices are stored WITHOUT VAT (VAT is calculated at order time)
+model Product {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  description String?  @db.Text
+  priceCzk    Decimal  @map("price_czk") @db.Decimal(10, 2)
+  quantity    Int      @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relation: A product can have many orders
+  orders Order[]
+
+  @@map("products")
+}
+
+/// Customer order
+/// Stores a snapshot of product price at order time to preserve historical pricing
+model Order {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Foreign key to Product
+  productId Int     @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
+
+  // Customer information
+  customerName         String  @map("customer_name") @db.VarChar(255)
+  customerEmail        String  @map("customer_email") @db.VarChar(255)
+  customerPhone        String  @map("customer_phone") @db.VarChar(50)
+  customerAddressLine1 String  @map("customer_address_line1") @db.VarChar(255)
+  customerAddressLine2 String? @map("customer_address_line2") @db.VarChar(255)
+  customerCity         String  @map("customer_city") @db.VarChar(100)
+  customerCountry      String  @map("customer_country") @db.VarChar(100)
+  customerZipCode      String  @map("customer_zip_code") @db.VarChar(20)
+
+  // Order pricing (snapshot at order time)
+  quantity      Int     @db.Integer
+  unitPriceCzk  Decimal @map("unit_price_czk") @db.Decimal(10, 2)
+  subtotalCzk   Decimal @map("subtotal_czk") @db.Decimal(12, 2)
+  vatRate       Decimal @map("vat_rate") @db.Decimal(5, 4) // e.g., 0.2100 for 21%
+  vatAmountCzk  Decimal @map("vat_amount_czk") @db.Decimal(12, 2)
+  totalPriceCzk Decimal @map("total_price_czk") @db.Decimal(12, 2)
+
+  // Indexes for common queries
+  @@index([productId])
+  @@index([customerEmail])
+  @@index([createdAt])
+  @@map("orders")
+}
+

@@ -1,0 +1,110 @@
+# =============================================================================
+# FAPI Order Service - Docker Compose
+# =============================================================================
+#
+# This file defines three services:
+#   - db:  PostgreSQL database
+#   - api: Express backend (apps/api)
+#   - web: Next.js frontend (apps/web)
+#
+# Quick start:
+#   docker-compose up        # Start all services (attached, see logs)
+#   docker-compose up -d     # Start all services (detached, background)
+#   docker-compose down      # Stop all services
+#   docker-compose down -v   # Stop and remove volumes (reset database)
+#
+# Or use Makefile shortcuts:
+#   make up                  # Start all services
+#   make down                # Stop all services
+#   make logs                # View logs
+#
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # PostgreSQL Database
+  # ---------------------------------------------------------------------------
+  # The database runs first and has a healthcheck so other services
+  # can wait for it to be ready before starting.
+  db:
+    image: postgres:16-alpine
+    container_name: fapi-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: fapi_orders
+    ports:
+      # Expose on host for local development tools (e.g., Prisma Studio)
+      - "5432:5432"
+    volumes:
+      # Named volume for persistent data
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d fapi_orders"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ---------------------------------------------------------------------------
+  # Express API (Backend)
+  # ---------------------------------------------------------------------------
+  # The API connects to the database using the Docker network hostname 'db'.
+  # It exposes port 3001 to the host machine.
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: fapi-api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      # Database URL uses Docker network hostname 'db' (not localhost)
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/fapi_orders
+      # Allow requests from the frontend (both Docker and host)
+      CORS_ORIGIN: http://localhost:3000
+    ports:
+      # Expose API on host port 3001
+      - "3001:3001"
+    depends_on:
+      db:
+        condition: service_healthy
+    # In development, you might want to mount source for hot-reload
+    # Uncomment below for development with hot-reload:
+    # volumes:
+    #   - ./apps/api/src:/app/apps/api/src
+    #   - ./packages/shared/src:/app/packages/shared/src
+
+  # ---------------------------------------------------------------------------
+  # Next.js Frontend (Web)
+  # ---------------------------------------------------------------------------
+  # The frontend talks to the API.
+  #
+  # IMPORTANT: NEXT_PUBLIC_API_URL
+  # - This is used by the browser (client-side), so it must be accessible
+  #   from the HOST machine, not from inside Docker.
+  # - Use http://localhost:3001 (the exposed port on your machine)
+  # - Do NOT use http://api:3001 (Docker network name, only works inside Docker)
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: fapi-web
+    restart: unless-stopped
+    environment:
+      # API URL as seen from the browser (host machine)
+      # This is a build-time variable for Next.js
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+    ports:
+      # Expose frontend on host port 3000
+      - "3000:3000"
+    depends_on:
+      - api
+
+# =============================================================================
+# Volumes
+# =============================================================================
+volumes:
+  postgres_data:
+    name: fapi-postgres-data

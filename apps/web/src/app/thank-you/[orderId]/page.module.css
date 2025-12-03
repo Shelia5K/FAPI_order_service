@@ -1,0 +1,406 @@
+/* =============================================================================
+   Thank You Page Styles
+   ============================================================================= */
+
+.main {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 2rem;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* =============================================================================
+   Loading State
+   ============================================================================= */
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: #64748b;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #2d5a87;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =============================================================================
+   Error State
+   ============================================================================= */
+
+.errorContainer {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.errorContainer h1 {
+  font-size: 2rem;
+  color: #1e3a5f;
+  margin-bottom: 1rem;
+}
+
+.errorContainer p {
+  color: #64748b;
+  margin-bottom: 1.5rem;
+}
+
+.homeLink {
+  color: #2d5a87;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.homeLink:hover {
+  text-decoration: underline;
+}
+
+/* =============================================================================
+   Success Header
+   ============================================================================= */
+
+.successHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.checkmark {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: white;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 8px 25px -5px rgba(5, 150, 105, 0.4);
+}
+
+.successHeader h1 {
+  font-size: 2rem;
+  color: #1e3a5f;
+  margin-bottom: 0.5rem;
+}
+
+.successHeader p {
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.orderId {
+  font-weight: 600;
+  color: #2d5a87;
+  margin-top: 0.5rem;
+  font-size: 1.2rem !important;
+}
+
+.orderDate {
+  font-size: 0.9rem !important;
+  color: #94a3b8 !important;
+  margin-top: 0.25rem;
+}
+
+/* =============================================================================
+   Cards
+   ============================================================================= */
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.card h2 {
+  font-size: 1.25rem;
+  color: #1e3a5f;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+/* =============================================================================
+   Sections
+   ============================================================================= */
+
+.section {
+  margin-bottom: 1.5rem;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.section h3 {
+  font-size: 0.85rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+/* =============================================================================
+   Order Details
+   ============================================================================= */
+
+.orderDetails {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.detailRow:last-child {
+  border-bottom: none;
+}
+
+.detailLabel {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.detailValue {
+  font-weight: 500;
+  color: #1e3a5f;
+  text-align: right;
+}
+
+/* =============================================================================
+   Price Breakdown
+   ============================================================================= */
+
+.priceBreakdown {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+.priceRow.priceTotal {
+  border-top: 2px solid #e2e8f0;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1e3a5f;
+}
+
+/* =============================================================================
+   Currency Conversions
+   ============================================================================= */
+
+.conversionNote {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-bottom: 0.75rem;
+}
+
+/* Currency Table */
+.currencyTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: #f8fafc;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.currencyTable th,
+.currencyTable td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.currencyTable th {
+  background: #e2e8f0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.currencyTable tbody tr {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.currencyTable tbody tr:last-child {
+  border-bottom: none;
+}
+
+.currencyTable tbody tr:hover {
+  background: #f1f5f9;
+}
+
+.currencyCode {
+  font-weight: 600;
+  color: #2d5a87;
+  font-size: 0.9rem;
+}
+
+.exchangeRate {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.currencyAmount {
+  font-weight: 500;
+  color: #1e3a5f;
+  font-size: 1rem;
+}
+
+/* FX Unavailable Message */
+.fxUnavailable {
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  border-radius: 12px;
+  padding: 1rem;
+  color: #92400e;
+}
+
+.fxUnavailable p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.fxErrorDetail {
+  font-size: 0.85rem !important;
+  color: #b45309 !important;
+  margin-top: 0.5rem !important;
+  font-style: italic;
+}
+
+/* =============================================================================
+   Actions
+   ============================================================================= */
+
+.actions {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.newOrderButton {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #2d5a87 0%, #1e3a5f 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.newOrderButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px -5px rgba(30, 58, 95, 0.4);
+  text-decoration: none;
+  color: white;
+}
+
+/* =============================================================================
+   Print Hint
+   ============================================================================= */
+
+.printHint {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  margin-top: 1.5rem;
+}
+
+/* =============================================================================
+   Print Styles
+   ============================================================================= */
+
+@media print {
+  .main {
+    background: white;
+    padding: 0;
+  }
+
+  .actions,
+  .printHint {
+    display: none;
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #e2e8f0;
+  }
+
+  .checkmark {
+    box-shadow: none;
+  }
+}
+
+/* =============================================================================
+   Responsive
+   ============================================================================= */
+
+@media (max-width: 480px) {
+  .main {
+    padding: 1rem;
+  }
+
+  .successHeader h1 {
+    font-size: 1.5rem;
+  }
+
+  .checkmark {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+  }
+
+  .detailRow {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .detailValue {
+    text-align: left;
+  }
+
+  .currencyTable th,
+  .currencyTable td {
+    padding: 0.5rem 0.75rem;
+  }
+}
